@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
 Main-Class: MainUI
+Class-Path: lib/flatlaf-3.7.2.jar
 

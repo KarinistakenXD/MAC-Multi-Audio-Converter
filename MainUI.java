@@ -90,7 +90,7 @@ public class MainUI extends JFrame {
         // macOS UI overrides to push content into the window frame
         getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
         getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
-        getRootPane().putClientProperty("TitlePane.showIcon", false);
+        getRootPane().putClientProperty("JRootPane.titleBarShowIcon", false);
 
         setTitle("MAC Multi Audio Converter");
         setSize(780, 750); 
@@ -1009,13 +1009,14 @@ public class MainUI extends JFrame {
         System.setProperty("file.encoding", "UTF-8");
         
         JFrame.setDefaultLookAndFeelDecorated(true);
+        JDialog.setDefaultLookAndFeelDecorated(true);
         System.setProperty("flatlaf.useWindowDecorations", "true");
         System.setProperty("flatlaf.useNativeWindowDecorations", "false");
         System.setProperty("flatlaf.animation", "true");
 
         try {
-            UIManager.put("TitlePane.buttonStyle", "mac");
-            UIManager.put("defaultFont", new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14)); 
+            UIManager.put("TitlePane.centerTitle", true);
+            UIManager.put("defaultFont", new java.awt.Font("Tahoma", java.awt.Font.PLAIN, 14));
             
             UIManager.put("ComboBox.selectionArc", 8); 
             UIManager.put("Component.focusWidth", 1); 
@@ -1032,6 +1033,11 @@ public class MainUI extends JFrame {
             UIManager.put("FileChooser.noPlacesBar", true);
 
             FlatMacDarkLaf.setup();
+            // macOS already supplies native traffic lights. Other platforms use
+            // our title pane while FlatLaf retains dragging and edge resizing.
+            if (!System.getProperty("os.name", "").startsWith("Mac")) {
+                UIManager.put("RootPaneUI", MacRootPaneUI.class.getName());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
